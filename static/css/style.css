@@ -1,0 +1,38 @@
+body {
+    font-family:  sans-serif;
+}
+h1 {
+    border: 2px #eee solid;
+    border-radius: 5px;
+    color: brown;
+    text-align: center;
+    padding: 10px;
+}
+fieldset {
+    border: 1px solid #090;
+    background: #ddd;
+    border-radius: 5px;
+    padding: 15px;
+}
+fieldset legend {
+    background: #090;
+    color: #fff;
+    padding: 5px 10px ;
+    border-radius: 5px;
+    box-shadow: 0 0 0 1px #ddd;
+    margin-left: 20px;
+    margin-top: 2ex;
+}
+label {
+    margin-right: 1em;
+}
+button {
+    background: #0A0;
+    padding: 5px 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 0 1px #ddd;
+    margin-top: 2ex;
+    width: 20em;
+    color: white;
+    font-size:  120%;
+}

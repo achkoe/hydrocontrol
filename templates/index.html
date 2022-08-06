@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{% block title %} Welcome to HydroControl {% endblock %}</h1>
+
+
+   <form method="post">
+   {% for key, value in datadict.items() %}
+        <fieldset>
+            <legend>{{key}}</legend>
+            {% for subkey, subvalue in value.items() %}
+            <label>{{subkey}}
+                <input {{subvalue['attrs']}} name="{{key}}_{{subkey}}"
+                   class="form-control"
+                   value="{{subvalue['value']}}"/>
+            </label>
+            {% endfor %}
+        </fieldset>
+   {% endfor %}
+      <div class="form-group">
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </div>
+   </form>
+
+   {% for key, value in datadict.items() %}
+   <p>{{key}}:{{value}}
+   {% endfor %}
+{% endblock %}
