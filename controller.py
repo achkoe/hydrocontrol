@@ -3,6 +3,11 @@ import time
 from datetime import datetime, timedelta
 import pprint
 
+try:
+    import RPi.GPIO as GPIO
+except ModuleNotFoundError:
+    import fake_gpio as GPIO
+
 
 config_name = "config.json"
 command_reload = "reload"
@@ -11,19 +16,13 @@ OFF = False
 ON = True
 
 
-def load_config():
-    with open(config_name, "r") as fh:
-        return json.load(fh)
-
-
-def control(queue):
-    while 1:
-        if not queue.empty():
-            command = queue.get()
-            if command == command_reload:
-                config = load_config()
-                print(config)
-        time.sleep(1)
+gpio_map = {
+    "Light 1": 14,
+    "Light 2": 15,
+    "Fan": 17,
+    "Heater": 18,
+    "Air": 22,
+}
 
 
 def tstr2datetime(s):
@@ -42,6 +41,13 @@ def setup():
     """
     with open(config_name, "r") as fh:
         config = json.load(fh)
+
+    assert config.keys() == gpio_map.keys()
+
+    GPIO.setmode(GPIO.BCM)
+    for gpio in gpio_map.values():
+        GPIO.setup(gpio, GPIO.OUT)
+
     cdict = dict()
     for key in config:
         assert "On" in config[key]
@@ -117,6 +123,8 @@ def loop(cdict, queue, timefn=gettime):
             cs=cdict[key]["currentstate"],
             ne=cdict[key]["t"][cdict[key]["index"]],
             ns=not cdict[key]["currentstate"]))
+        # set output to current state
+        GPIO.output(gpio_map[key], GPIO.HIGH if cdict[key]["currentstate"] is False else GPIO.LOW)
     while True:
         if not queue.empty() and queue.get() == command_reload:
             break
@@ -126,6 +134,8 @@ def loop(cdict, queue, timefn=gettime):
                 cdict[key]["currentstate"] = not cdict[key]["currentstate"]
                 cdict[key]["index"] = 0 if cdict[key]["index"] + 1 >= len(cdict[key]["t"]) else cdict[key]["index"] + 1
                 print("{ct}: {key} switch to {s}".format(key=key, ct=currenttime, s=cdict[key]["currentstate"]))
+                # set output to current state
+                GPIO.output(gpio_map[key], GPIO.HIGH if cdict[key]["currentstate"] is False else GPIO.LOW)
         time.sleep(0.1)
         currenttime = next(t)
 
@@ -146,5 +156,5 @@ if __name__ == '__main__':
 
     q = Queue()
     cdict = setup()
-    #pprint.pprint(cdict)
+    pprint.pprint(cdict)
     loop(cdict, q, timefn=get_fake_time)
