@@ -67,9 +67,9 @@ def setup():
 
 def get_fake_time():
     now = datetime.now()
-    now = now.replace(hour=5, minute=0, second=0, microsecond=0)
+    now = now.replace(hour=19, minute=0, second=0, microsecond=0)
     te = now + timedelta(days=2)
-    print(now, te)
+    # print(now, te)
     tlist = []
     while now < te:
         now = now + timedelta(minutes=1)
@@ -80,28 +80,40 @@ def get_fake_time():
 
 def gettime():
     now = datetime.now()
-    return now.replace(day=1, month=1, year=2001)
+    yield now.replace(day=1, month=1, year=2001)
 
 
-def loop(cdict, queue, debug=False):
-    # get the next time for each entry
-    if debug:
-        t = get_fake_time()
-        currenttime = next(t)
+def get_next_time(tlist, t):
+    # tlist = [6:00, 12:00, 16:00, 18:00]
+    # currenttime = 5:00  -> index = 0, state = Off
+    # currenttime = 7:00  -> index = 1, state = On
+    # currenttime = 13:00 -> index = 2, state = Off
+    # currenttime = 17:00 -> index = 3, state = On
+    # currenttime = 19:00 -> index = 0, state = Off
+    state = OFF
+    if t < tlist[0]:
+        return 0, state
+    elif t > tlist[-1]:
+        return 0, state
     else:
-        currenttime = gettime()
-    for key in cdict:
-        state = cdict[key]["currentstate"]
-        for index in range(len(cdict[key]["t"])):
-            if currenttime < cdict[key]["t"][index]:
-                cdict[key]["index"] = index
-                cdict[key]["currentstate"] = state
-                # TODO: set output to current state
+        for index in range(len(tlist)):
+            if t < tlist[index]:
                 break
             state = not state
-        print("{key}: current time {ct}\ncurrentstate={cs}, next event at {ne}: switch to {ns}".format(
+        return index, state
+
+
+def loop(cdict, queue, timefn=gettime):
+    # get the next time for each entry
+    t = timefn()
+    currenttime = next(t)
+    print(f"currenttime={currenttime}\n")
+    for key in cdict:
+        index, state = get_next_time(cdict[key]["t"], currenttime)
+        cdict[key]["index"] = index
+        cdict[key]["currentstate"] = state
+        print("{key}: currentstate={cs}, next event at {ne}: switch to {ns}".format(
             key=key,
-            ct=currenttime,
             cs=cdict[key]["currentstate"],
             ne=cdict[key]["t"][cdict[key]["index"]],
             ns=not cdict[key]["currentstate"]))
@@ -114,11 +126,8 @@ def loop(cdict, queue, debug=False):
                 cdict[key]["currentstate"] = not cdict[key]["currentstate"]
                 cdict[key]["index"] = 0 if cdict[key]["index"] + 1 >= len(cdict[key]["t"]) else cdict[key]["index"] + 1
                 print("{ct}: {key} switch to {s}".format(key=key, ct=currenttime, s=cdict[key]["currentstate"]))
-        if debug:
-            currenttime = next(t)
-        else:
-            time.sleep(1)
-            currenttime = gettime()
+        time.sleep(0.1)
+        currenttime = next(t)
 
 
 def main(queue):
@@ -130,7 +139,12 @@ def main(queue):
 if __name__ == '__main__':
     from multiprocessing import Queue
 
+    with open(config_name, "r") as fh:
+        d = json.load(fh)
+    with open(config_name, "w") as fh:
+        json.dump(d, fh, indent=4)
+
     q = Queue()
     cdict = setup()
-    pprint.pprint(cdict)
-    #loop(cdict, q, debug=True)
+    #pprint.pprint(cdict)
+    loop(cdict, q, timefn=get_fake_time)
