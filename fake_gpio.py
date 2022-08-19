@@ -13,4 +13,5 @@ def setup(n, s):
 
 
 def output(n, s):
-    print(f"set {n} to {s}")
+    pass
+    #print(f"set {n} to {s}")

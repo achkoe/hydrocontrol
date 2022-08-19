@@ -11,6 +11,7 @@ except ModuleNotFoundError:
 
 config_name = "config.json"
 command_reload = "reload"
+command_get = "get"
 
 OFF = False
 ON = True
@@ -25,29 +26,33 @@ gpio_map = {
 }
 
 
+class Clock():
+    def __init__(self):
+        self.ts = time.time()
+
+    def get(self):
+        self.ts += 60
+        return datetime.now().replace(day=1, month=1, year=2001, second=0, microsecond=0)
+        return datetime.fromtimestamp(self.ts).replace(day=1, month=1, year=2001, second=0, microsecond=0)
+
+
+clock = Clock()
+
+
 def tstr2datetime(s):
-    now = datetime.now().replace(day=1, month=1, year=2001)
+    now = clock.get()
     hms = dict(hour=0, minute=0, second=0, microsecond=0)
     hms.update(dict(zip(["hour", "minute", "second"], [int(item) for item in s.split(":")])))
     return now.replace(**hms)
 
 
-def setup():
-    """Reads config file and returns a dict with all keys from config.
+def setup(config):
+    """Return a dict with all keys from config.
     Values are
     currentstate (bool): current state of the output attached to key
     index (int): -1
     t (list(datetime)): a list with all times to swich output attached to key. Only time is important.
     """
-    with open(config_name, "r") as fh:
-        config = json.load(fh)
-
-    assert config.keys() == gpio_map.keys()
-
-    GPIO.setmode(GPIO.BCM)
-    for gpio in gpio_map.values():
-        GPIO.setup(gpio, GPIO.OUT)
-
     cdict = dict()
     for key in config:
         assert "On" in config[key]
@@ -71,24 +76,6 @@ def setup():
     return cdict
 
 
-def get_fake_time():
-    now = datetime.now()
-    now = now.replace(hour=19, minute=0, second=0, microsecond=0)
-    te = now + timedelta(days=2)
-    # print(now, te)
-    tlist = []
-    while now < te:
-        now = now + timedelta(minutes=1)
-        tlist.append(now.replace(day=1, month=1, year=2001))
-    for t in tlist:
-        yield t
-
-
-def gettime():
-    now = datetime.now()
-    yield now.replace(day=1, month=1, year=2001)
-
-
 def get_next_time(tlist, t):
     # tlist = [6:00, 12:00, 16:00, 18:00]
     # currenttime = 5:00  -> index = 0, state = Off
@@ -109,11 +96,10 @@ def get_next_time(tlist, t):
         return index, state
 
 
-def loop(cdict, queue, timefn=gettime):
+def loop(cdict, queue_r, queue_w):
     # get the next time for each entry
-    t = timefn()
-    currenttime = next(t)
-    print(f"currenttime={currenttime}\n")
+    currenttime = clock.get()
+    # print(f"currenttime={currenttime}\n")
     for key in cdict:
         index, state = get_next_time(cdict[key]["t"], currenttime)
         cdict[key]["index"] = index
@@ -122,39 +108,52 @@ def loop(cdict, queue, timefn=gettime):
             key=key,
             cs=cdict[key]["currentstate"],
             ne=cdict[key]["t"][cdict[key]["index"]],
-            ns=not cdict[key]["currentstate"]))
+            ns=not cdict[key]["currentstate"]), flush=True)
         # set output to current state
         GPIO.output(gpio_map[key], GPIO.HIGH if cdict[key]["currentstate"] is False else GPIO.LOW)
     while True:
-        if not queue.empty() and queue.get() == command_reload:
-            break
+        if not queue_r.empty():
+            cmd = queue_r.get()
+            if cmd == command_reload:
+                break
+            elif cmd == command_get:
+                rval = json.dumps(dict([(key, cdict[key]["currentstate"]) for key in cdict]))
+                # rval = ",".join("{key}={state}".format(key=key, state=cdict[key]["currentstate"]) for key in cdict)
+                queue_w.put(rval)
         for key in cdict:
             nexttime = cdict[key]["t"][cdict[key]["index"]]
             if currenttime == nexttime:
                 cdict[key]["currentstate"] = not cdict[key]["currentstate"]
                 cdict[key]["index"] = 0 if cdict[key]["index"] + 1 >= len(cdict[key]["t"]) else cdict[key]["index"] + 1
-                print("{ct}: {key} switch to {s}".format(key=key, ct=currenttime, s=cdict[key]["currentstate"]))
+                print("{ct}:{key}:{s}".format(key=key, ct=currenttime, s=cdict[key]["currentstate"]), flush=True)
                 # set output to current state
                 GPIO.output(gpio_map[key], GPIO.HIGH if cdict[key]["currentstate"] is False else GPIO.LOW)
         time.sleep(0.1)
-        currenttime = next(t)
+        currenttime = clock.get()
 
 
-def main(queue):
+def main(queue_r, queue_w):
+    GPIO.setmode(GPIO.BCM)
+    for gpio in gpio_map.values():
+        GPIO.setup(gpio, GPIO.OUT)
+
     while True:
-        cdict = setup()
-        loop(cdict, queue)
+        with open(config_name, "r") as fh:
+            config = json.load(fh)
+        assert config.keys() == gpio_map.keys()
+        cdict = setup(config)
+        loop(cdict, queue_r, queue_w)
 
 
 if __name__ == '__main__':
     from multiprocessing import Queue
 
     with open(config_name, "r") as fh:
-        d = json.load(fh)
+        config = json.load(fh)
     with open(config_name, "w") as fh:
-        json.dump(d, fh, indent=4)
+        json.dump(config, fh, indent=4)
 
     q = Queue()
-    cdict = setup()
-    pprint.pprint(cdict)
-    loop(cdict, q, timefn=get_fake_time)
+    cdict = setup(config)
+    #pprint.pprint(cdict)
+    loop(cdict, q)

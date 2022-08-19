@@ -19,24 +19,6 @@
             "attrs": "type=time required"
         }
     },
-    "Air": {
-        "On": {
-            "value": "00:00",
-            "attrs": "type=time required"
-        },
-        "Off": {
-            "value": "23:59",
-            "attrs": "type=time required"
-        },
-        "Every": {
-            "value": "30",
-            "attrs": "type=number min=15 max=60"
-        },
-        "For": {
-            "value": "5",
-            "attrs": "type=number min=5 max=15"
-        }
-    },
     "Fan": {
         "On": {
             "value": "00:00",
@@ -47,11 +29,11 @@
             "attrs": "type=time required"
         },
         "Every": {
-            "value": "60",
+            "value": 10,
             "attrs": "type=number min=15 max=60"
         },
         "For": {
-            "value": "1",
+            "value": 1,
             "attrs": "type=number min=1 max=15"
         }
     },
@@ -65,12 +47,30 @@
             "attrs": "type=time required"
         },
         "Every": {
-            "value": "120",
+            "value": 15,
             "attrs": "type=number min=30 max=240"
         },
         "For": {
-            "value": "30",
+            "value": 2,
             "attrs": "type=number min=15 max=120"
+        }
+    },
+    "Air": {
+        "On": {
+            "value": "00:00",
+            "attrs": "type=time required"
+        },
+        "Off": {
+            "value": "23:59",
+            "attrs": "type=time required"
+        },
+        "Every": {
+            "value": 5,
+            "attrs": "type=number min=1 max=60"
+        },
+        "For": {
+            "value": 1,
+            "attrs": "type=number min=1 max=15"
         }
     }
 }

@@ -13,9 +13,10 @@ fieldset {
     background: #ddd;
     border-radius: 5px;
     padding: 15px;
+    margin-bottom: 1ex;
 }
 fieldset legend {
-    background: #090;
+    background: #465445;
     color: #fff;
     padding: 5px 10px ;
     border-radius: 5px;
@@ -35,4 +36,8 @@ button {
     width: 20em;
     color: white;
     font-size:  120%;
+    width: 100%;
 }
+
+.on { color: #0A0; }
+.off { color: red; }
