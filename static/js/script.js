@@ -1,5 +1,4 @@
 window.onload = function () {
-        console.log('DOC loaded');
         timer();
 }
 
@@ -18,7 +17,7 @@ function timer() {
                         e.classList.remove("off");
                         e.classList.add(obj[prop] ? "on" : "off");
                 }
-                setTimeout(timer, 1000);
+                setTimeout(timer, 5000);
             }
         }
         xmlhttp.send();

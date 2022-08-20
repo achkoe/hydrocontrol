@@ -1,3 +1,5 @@
+"""Controller script for plant grow station.
+"""
 import json
 import time
 from datetime import datetime, timedelta
