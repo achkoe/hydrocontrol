@@ -1,4 +1,13 @@
 """Controller script for plant grow station.
+
+3.3V                  1   2  5V
+GPIO2                 3   4  5V
+GPIO3                 5   6  GND
+GPIO4                 7   8  GPIO14  Light1
+GND                   9  10  GPIO15  Light2
+GPIO17  Plug3        11  12  GPIO18  Plug4 (Heater)
+GPIO27  Plug5 (Air)  13  14  GND
+GPIO22               15  16  GPIO23  Fan
 """
 import json
 import time
@@ -22,9 +31,9 @@ ON = True
 gpio_map = {
     "Light 1": 14,
     "Light 2": 15,
-    "Fan": 17,
+    "Fan": 23,
     "Heater": 18,
-    "Air": 22,
+    "Air": 27,
 }
 
 
