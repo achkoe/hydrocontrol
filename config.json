@@ -29,11 +29,11 @@
             "attrs": "type=time required"
         },
         "Every": {
-            "value": 10,
-            "attrs": "type=number min=15 max=60"
+            "value": 6,
+            "attrs": "type=number min=1 max=60"
         },
         "For": {
-            "value": 1,
+            "value": 3,
             "attrs": "type=number min=1 max=15"
         }
     },
@@ -47,8 +47,8 @@
             "attrs": "type=time required"
         },
         "Every": {
-            "value": 15,
-            "attrs": "type=number min=30 max=240"
+            "value": 4,
+            "attrs": "type=number min=1 max=240"
         },
         "For": {
             "value": 2,
@@ -65,7 +65,7 @@
             "attrs": "type=time required"
         },
         "Every": {
-            "value": 5,
+            "value": 2,
             "attrs": "type=number min=1 max=60"
         },
         "For": {
