@@ -38,6 +38,20 @@ button {
     font-size:  120%;
     width: 100%;
 }
+.flex-container {
+  display:flex;
+  justify-content: space-evenly;
+}
+
+.flex-item {
+    background: #465445;
+    color: #fff;
+    padding: 5px 10px ;
+    border-radius: 5px;
+    box-shadow: 0 0 0 1px #ddd;
+    margin-left: 20px;
+    margin-top: 2ex;
+}
 
 .on { color: #0A0; }
 .off { color: red; }

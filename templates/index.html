@@ -1,28 +1,24 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>{% block title %} Welcome to HydroControl {% endblock %}</h1>
+<h1>{% block title %} Welcome to HydroControl {% endblock %}</h1>
 
+<div class="flex-container">
+{% for key in keylist %}
+  <div class="flex-item">
+    <span id="{{key}}">&#x273A;</span>
+    <span>{{key}}</span>
+  </div>
+{% endfor %}
+</div>
 
-   <form method="post">
-   {% for key, value in datadict.items() %}
-        <fieldset>
-            <legend>
-                <span id="{{key}}">&#x273A;</span>
-                <span>{{key}}</span>
-            </legend>
-            {% for subkey, subvalue in value.items() %}
-            <label>{{subkey}}
-                <input {{subvalue['attrs']}} name="{{key}}_{{subkey}}"
-                   class="form-control"
-                   value="{{subvalue['value']}}"/>
-            </label>
-            {% endfor %}
-        </fieldset>
-   {% endfor %}
-      <div class="form-group">
+<p></p>
+
+<form method="post">
+    <textarea rows="50", cols="120" wrap="hard">{{data}}</textarea>
+    <div class="form-group">
         <button type="submit" class="btn btn-primary">Submit</button>
-      </div>
-   </form>
+    </div>
+</form>
 
 {% endblock %}

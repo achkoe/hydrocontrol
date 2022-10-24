@@ -15,6 +15,7 @@ import controller
 
 with open("config.json", "r") as fh:
     data = json.load(fh)
+keylist = [item for item in controller.gpio_map.keys()]
 
 qw, qr = Queue(), Queue()
 p = Process(target=controller.main, args=(qw, qr))
@@ -25,13 +26,12 @@ app = Flask(__name__)
 @app.route('/', methods=('GET', 'POST'))
 def index():
     if request.method == 'POST':
-        for name in request.form:
-            key, subkey = name.split("_", 1)
-            data[key][subkey]["value"] = request.form[name]
         with open("config.json", "w") as fh:
             json.dump(data, fh, indent=4)
         qw.put(controller.command_reload)
-    return render_template('index.html', datadict=data)
+    fdata = "\n".join(f"{item!r}" for item in data)
+    return render_template('index.html', data=fdata, keylist=keylist)
+    #return render_template('index.html', data=json.dumps(data, indent=4), keylist=keylist)
 
 
 @app.route('/query', methods=('GET',))

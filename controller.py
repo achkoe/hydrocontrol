@@ -45,9 +45,25 @@ class Clock():
     def get(self):
         self.ts += 60
         return datetime.now().replace(day=1, month=1, year=2001, second=0, microsecond=0)
-        return datetime.fromtimestamp(self.ts).replace(day=1, month=1, year=2001, second=0, microsecond=0)
 
 
+class FakeClock():
+    def __init__(self):
+        self.tlist = []
+        for day in [1, 2]:
+            for hour in range(0, 24):
+                for minute in range(0, 60):
+                    for second in range(0, 60):
+                        self.tlist.append(datetime(hour=hour, minute=minute, second=second, day=day, year=2001, month=1))
+        self.cnt = 0
+
+    def get(self):
+        rval = self.tlist[self.cnt].replace(day=1, month=1, year=2001)
+        self.cnt += 1
+        return rval
+
+
+#clock = FakeClock()
 clock = Clock()
 
 
@@ -58,90 +74,34 @@ def tstr2datetime(s):
     return now.replace(**hms)
 
 
-def setup(config):
-    """Return a dict with all keys from config.
-    Values are
-    currentstate (bool): current state of the output attached to key
-    index (int): -1
-    t (list(datetime)): a list with all times to swich output attached to key. Only time is important.
-    """
-    cdict = dict()
-    for key in config:
-        assert "On" in config[key]
-        assert "Off" in config[key]
-        cdict[key] = dict(t=[], index=-1, currentstate=OFF)
-        if "Every" in config[key]:
-            assert "For" in config[key]
-            t_every = timedelta(seconds=60 * int(config[key]["Every"]["value"]))  # every is in minutes
-            t_for = timedelta(seconds=60 * int(config[key]["For"]["value"]))     # for is in minutes
-            t_start = tstr2datetime(config[key]["On"]["value"])
-            t_stop = tstr2datetime(config[key]["Off"]["value"])
-            while True:
-                t_next = t_start + t_for
-                cdict[key]["t"].append(t_start)
-                cdict[key]["t"].append(t_next)
-                t_start = t_start + t_every
-                if t_start >= t_stop:
-                    break
-        else:
-            cdict[key]["t"] = [tstr2datetime(config[key]["On"]["value"]), tstr2datetime(config[key]["Off"]["value"])]
-    return cdict
-
-
-def get_next_time(tlist, t):
-    # tlist = [6:00, 12:00, 16:00, 18:00]
-    # currenttime = 5:00  -> index = 0, state = Off
-    # currenttime = 7:00  -> index = 1, state = On
-    # currenttime = 13:00 -> index = 2, state = Off
-    # currenttime = 17:00 -> index = 3, state = On
-    # currenttime = 19:00 -> index = 0, state = Off
-    state = OFF
-    if t < tlist[0]:
-        return 0, state
-    elif t > tlist[-1]:
-        return 0, state
-    else:
-        for index in range(len(tlist)):
-            if t < tlist[index]:
-                break
-            state = not state
-        return index, state
-
-
-def loop(cdict, queue_r, queue_w):
-    # get the next time for each entry
-    currenttime = clock.get()
-    # print(f"currenttime={currenttime}\n")
-    for key in cdict:
-        index, state = get_next_time(cdict[key]["t"], currenttime)
-        cdict[key]["index"] = index
-        cdict[key]["currentstate"] = state
-        print("{key}: currentstate={cs}, next event at {ne}: switch to {ns}".format(
-            key=key,
-            cs=cdict[key]["currentstate"],
-            ne=cdict[key]["t"][cdict[key]["index"]],
-            ns=not cdict[key]["currentstate"]), flush=True)
-        # set output to current state
-        GPIO.output(gpio_map[key], GPIO.HIGH if cdict[key]["currentstate"] is False else GPIO.LOW)
+def loop(timelist, queue_r, queue_w):
     while True:
+
+        currenttime = clock.get()
+        gpio_dict = dict([key, OFF] for key in gpio_map)
+        for timeitem in timelist:
+            time_on = tstr2datetime(timeitem["On"])
+            time_off = tstr2datetime(timeitem["Off"])
+            if currenttime >= time_on and currenttime < time_off:
+                for key in gpio_dict:
+                    if timeitem.get(key, False) is True:
+                        gpio_dict[key] = ON
+
         if not queue_r.empty():
             cmd = queue_r.get()
             if cmd == command_reload:
                 break
             elif cmd == command_get:
-                rval = json.dumps(dict([(key, cdict[key]["currentstate"]) for key in cdict]))
-                # rval = ",".join("{key}={state}".format(key=key, state=cdict[key]["currentstate"]) for key in cdict)
+                rval = json.dumps(dict(timelist=timelist, state=gpio_dict))
                 queue_w.put(rval)
-        for key in cdict:
-            nexttime = cdict[key]["t"][cdict[key]["index"]]
-            if currenttime == nexttime:
-                cdict[key]["currentstate"] = not cdict[key]["currentstate"]
-                cdict[key]["index"] = 0 if cdict[key]["index"] + 1 >= len(cdict[key]["t"]) else cdict[key]["index"] + 1
-                print("{ct}:{key}:{s}".format(key=key, ct=currenttime, s=cdict[key]["currentstate"]), flush=True)
-                # set output to current state
-                GPIO.output(gpio_map[key], GPIO.HIGH if cdict[key]["currentstate"] is False else GPIO.LOW)
+
+        # print(currenttime, gpio_dict)
+        for key in gpio_dict:
+            GPIO.output(gpio_map[key], GPIO.HIGH if gpio_dict[key] is False else GPIO.LOW)
+
+        # while clock.get().minute == currenttime.minute:
+        #     pass
         time.sleep(0.1)
-        currenttime = clock.get()
 
 
 def main(queue_r, queue_w):
@@ -152,9 +112,7 @@ def main(queue_r, queue_w):
     while True:
         with open(config_name, "r") as fh:
             config = json.load(fh)
-        assert config.keys() == gpio_map.keys()
-        cdict = setup(config)
-        loop(cdict, queue_r, queue_w)
+        loop(config, queue_r, queue_w)
 
 
 if __name__ == '__main__':
@@ -162,10 +120,6 @@ if __name__ == '__main__':
 
     with open(config_name, "r") as fh:
         config = json.load(fh)
-    with open(config_name, "w") as fh:
-        json.dump(config, fh, indent=4)
 
-    q = Queue()
-    cdict = setup(config)
-    #pprint.pprint(cdict)
-    loop(cdict, q)
+    qw, qr = Queue(), Queue()
+    loop(config, qr, qw)

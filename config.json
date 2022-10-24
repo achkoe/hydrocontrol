@@ -1,76 +1,236 @@
-{
-    "Light 1": {
-        "On": {
-            "value": "06:00",
-            "attrs": "type=time required"
-        },
-        "Off": {
-            "value": "18:00",
-            "attrs": "type=time required"
-        }
+[
+    {
+        "On": "6:00",
+        "Off": "20:00",
+        "Light 1": true,
+        "Light 2": true,
+        "Fan": false,
+        "Air": false,
+        "Heater": false
     },
-    "Light 2": {
-        "On": {
-            "value": "06:00",
-            "attrs": "type=time required"
-        },
-        "Off": {
-            "value": "18:00",
-            "attrs": "type=time required"
-        }
+    {
+        "On": "0:00",
+        "Off": "23:59",
+        "Light 1": false,
+        "Light 2": false,
+        "Fan": false,
+        "Air": true,
+        "Heater": false
     },
-    "Fan": {
-        "On": {
-            "value": "00:00",
-            "attrs": "type=time required"
-        },
-        "Off": {
-            "value": "23:59",
-            "attrs": "type=time required"
-        },
-        "Every": {
-            "value": 6,
-            "attrs": "type=number min=1 max=60"
-        },
-        "For": {
-            "value": 3,
-            "attrs": "type=number min=1 max=15"
-        }
+    {
+        "On": "0:00",
+        "Off": "0:10",
+        "Light 1": false,
+        "Light 2": false,
+        "Fan": true,
+        "Air": false,
+        "Heater": false
     },
-    "Heater": {
-        "On": {
-            "value": "00:00",
-            "attrs": "type=time required"
-        },
-        "Off": {
-            "value": "23:59",
-            "attrs": "type=time required"
-        },
-        "Every": {
-            "value": 4,
-            "attrs": "type=number min=1 max=240"
-        },
-        "For": {
-            "value": 2,
-            "attrs": "type=number min=15 max=120"
-        }
+    {
+        "On": "1:00",
+        "Off": "1:10",
+        "Light 1": false,
+        "Light 2": false,
+        "Fan": true,
+        "Air": false,
+        "Heater": false
     },
-    "Air": {
-        "On": {
-            "value": "00:00",
-            "attrs": "type=time required"
-        },
-        "Off": {
-            "value": "23:59",
-            "attrs": "type=time required"
-        },
-        "Every": {
-            "value": 2,
-            "attrs": "type=number min=1 max=60"
-        },
-        "For": {
-            "value": 1,
-            "attrs": "type=number min=1 max=15"
-        }
+    {
+        "On": "2:00",
+        "Off": "2:10",
+        "Light 1": false,
+        "Light 2": false,
+        "Fan": true,
+        "Air": false,
+        "Heater": false
+    },
+    {
+        "On": "3:00",
+        "Off": "3:10",
+        "Light 1": false,
+        "Light 2": false,
+        "Fan": true,
+        "Air": false,
+        "Heater": false
+    },
+    {
+        "On": "4:00",
+        "Off": "4:10",
+        "Light 1": false,
+        "Light 2": false,
+        "Fan": true,
+        "Air": false,
+        "Heater": false
+    },
+    {
+        "On": "5:00",
+        "Off": "5:10",
+        "Light 1": false,
+        "Light 2": false,
+        "Fan": true,
+        "Air": false,
+        "Heater": false
+    },
+    {
+        "On": "6:00",
+        "Off": "6:10",
+        "Light 1": false,
+        "Light 2": false,
+        "Fan": true,
+        "Air": false,
+        "Heater": false
+    },
+    {
+        "On": "7:00",
+        "Off": "7:10",
+        "Light 1": false,
+        "Light 2": false,
+        "Fan": true,
+        "Air": false,
+        "Heater": false
+    },
+    {
+        "On": "8:00",
+        "Off": "8:10",
+        "Light 1": false,
+        "Light 2": false,
+        "Fan": true,
+        "Air": false,
+        "Heater": false
+    },
+    {
+        "On": "9:00",
+        "Off": "9:10",
+        "Light 1": false,
+        "Light 2": false,
+        "Fan": true,
+        "Air": false,
+        "Heater": false
+    },
+    {
+        "On": "10:00",
+        "Off": "10:10",
+        "Light 1": false,
+        "Light 2": false,
+        "Fan": true,
+        "Air": false,
+        "Heater": false
+    },
+    {
+        "On": "11:00",
+        "Off": "11:10",
+        "Light 1": false,
+        "Light 2": false,
+        "Fan": true,
+        "Air": false,
+        "Heater": false
+    },
+    {
+        "On": "12:00",
+        "Off": "12:10",
+        "Light 1": false,
+        "Light 2": false,
+        "Fan": true,
+        "Air": false,
+        "Heater": false
+    },
+    {
+        "On": "13:00",
+        "Off": "13:10",
+        "Light 1": false,
+        "Light 2": false,
+        "Fan": true,
+        "Air": false,
+        "Heater": false
+    },
+    {
+        "On": "14:00",
+        "Off": "14:10",
+        "Light 1": false,
+        "Light 2": false,
+        "Fan": true,
+        "Air": false,
+        "Heater": false
+    },
+    {
+        "On": "15:00",
+        "Off": "15:10",
+        "Light 1": false,
+        "Light 2": false,
+        "Fan": true,
+        "Air": false,
+        "Heater": false
+    },
+    {
+        "On": "16:00",
+        "Off": "16:10",
+        "Light 1": false,
+        "Light 2": false,
+        "Fan": true,
+        "Air": false,
+        "Heater": false
+    },
+    {
+        "On": "17:00",
+        "Off": "17:10",
+        "Light 1": false,
+        "Light 2": false,
+        "Fan": true,
+        "Air": false,
+        "Heater": false
+    },
+    {
+        "On": "18:00",
+        "Off": "18:10",
+        "Light 1": false,
+        "Light 2": false,
+        "Fan": true,
+        "Air": false,
+        "Heater": false
+    },
+    {
+        "On": "19:00",
+        "Off": "19:10",
+        "Light 1": false,
+        "Light 2": false,
+        "Fan": true,
+        "Air": false,
+        "Heater": false
+    },
+    {
+        "On": "20:00",
+        "Off": "20:10",
+        "Light 1": false,
+        "Light 2": false,
+        "Fan": true,
+        "Air": false,
+        "Heater": false
+    },
+    {
+        "On": "21:00",
+        "Off": "21:10",
+        "Light 1": false,
+        "Light 2": false,
+        "Fan": true,
+        "Air": false,
+        "Heater": false
+    },
+    {
+        "On": "22:00",
+        "Off": "22:10",
+        "Light 1": false,
+        "Light 2": false,
+        "Fan": true,
+        "Air": false,
+        "Heater": false
+    },
+    {
+        "On": "23:00",
+        "Off": "23:10",
+        "Light 1": false,
+        "Light 2": false,
+        "Fan": true,
+        "Air": false,
+        "Heater": false
     }
-}
+]
