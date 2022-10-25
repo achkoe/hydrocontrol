@@ -75,6 +75,7 @@ def tstr2datetime(s):
 
 
 def loop(timelist, queue_r, queue_w):
+    print("entering loop")
     while True:
 
         currenttime = clock.get()
@@ -86,10 +87,12 @@ def loop(timelist, queue_r, queue_w):
                 for key in gpio_dict:
                     if timeitem.get(key, False) is True:
                         gpio_dict[key] = ON
+                        print(key, "ON")
 
         if not queue_r.empty():
             cmd = queue_r.get()
             if cmd == command_reload:
+                print("cmd reload")
                 break
             elif cmd == command_get:
                 rval = json.dumps(dict(timelist=timelist, state=gpio_dict))

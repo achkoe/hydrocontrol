@@ -1,111 +1,123 @@
 [
     {
-        "On": "6:00",
+        "On": "06:00",
         "Off": "20:00",
         "Light 1": true,
         "Light 2": true,
         "Fan": false,
         "Air": false,
-        "Heater": false
+        "Heater": false,
+        "Res": false
     },
     {
-        "On": "0:00",
+        "On": "00:00",
         "Off": "23:59",
         "Light 1": false,
         "Light 2": false,
         "Fan": false,
         "Air": true,
-        "Heater": false
+        "Heater": false,
+        "Res": false
     },
     {
-        "On": "0:00",
-        "Off": "0:10",
+        "On": "00:00",
+        "Off": "00:10",
         "Light 1": false,
         "Light 2": false,
         "Fan": true,
         "Air": false,
-        "Heater": false
+        "Heater": false,
+        "Res": false
     },
     {
-        "On": "1:00",
-        "Off": "1:10",
+        "On": "01:00",
+        "Off": "01:10",
         "Light 1": false,
         "Light 2": false,
         "Fan": true,
         "Air": false,
-        "Heater": false
+        "Heater": false,
+        "Res": false
     },
     {
-        "On": "2:00",
-        "Off": "2:10",
+        "On": "02:00",
+        "Off": "02:10",
         "Light 1": false,
         "Light 2": false,
         "Fan": true,
         "Air": false,
-        "Heater": false
+        "Heater": false,
+        "Res": false
     },
     {
-        "On": "3:00",
-        "Off": "3:10",
+        "On": "03:00",
+        "Off": "03:10",
         "Light 1": false,
         "Light 2": false,
         "Fan": true,
         "Air": false,
-        "Heater": false
+        "Heater": false,
+        "Res": false
     },
     {
-        "On": "4:00",
-        "Off": "4:10",
+        "On": "04:00",
+        "Off": "04:10",
         "Light 1": false,
         "Light 2": false,
         "Fan": true,
         "Air": false,
-        "Heater": false
+        "Heater": false,
+        "Res": false
     },
     {
-        "On": "5:00",
-        "Off": "5:10",
+        "On": "05:00",
+        "Off": "05:10",
         "Light 1": false,
         "Light 2": false,
         "Fan": true,
         "Air": false,
-        "Heater": false
+        "Heater": false,
+        "Res": false
     },
     {
-        "On": "6:00",
-        "Off": "6:10",
+        "On": "06:00",
+        "Off": "06:10",
         "Light 1": false,
         "Light 2": false,
         "Fan": true,
         "Air": false,
-        "Heater": false
+        "Heater": false,
+        "Res": false
     },
     {
-        "On": "7:00",
-        "Off": "7:10",
+        "On": "07:00",
+        "Off": "07:10",
         "Light 1": false,
         "Light 2": false,
         "Fan": true,
         "Air": false,
-        "Heater": false
+        "Heater": false,
+        "Res": false
     },
     {
-        "On": "8:00",
-        "Off": "8:10",
+        "On": "08:00",
+        "Off": "08:10",
         "Light 1": false,
         "Light 2": false,
         "Fan": true,
         "Air": false,
-        "Heater": false
+        "Heater": false,
+        "Res": false
     },
     {
-        "On": "9:00",
-        "Off": "9:10",
+        "On": "09:00",
+        "Off": "09:10",
         "Light 1": false,
         "Light 2": false,
         "Fan": true,
         "Air": false,
-        "Heater": false
+        "Heater": false,
+        "Res": false
     },
     {
         "On": "10:00",
@@ -114,7 +126,8 @@
         "Light 2": false,
         "Fan": true,
         "Air": false,
-        "Heater": false
+        "Heater": false,
+        "Res": false
     },
     {
         "On": "11:00",
@@ -123,7 +136,8 @@
         "Light 2": false,
         "Fan": true,
         "Air": false,
-        "Heater": false
+        "Heater": false,
+        "Res": false
     },
     {
         "On": "12:00",
@@ -132,7 +146,8 @@
         "Light 2": false,
         "Fan": true,
         "Air": false,
-        "Heater": false
+        "Heater": false,
+        "Res": false
     },
     {
         "On": "13:00",
@@ -141,7 +156,8 @@
         "Light 2": false,
         "Fan": true,
         "Air": false,
-        "Heater": false
+        "Heater": false,
+        "Res": false
     },
     {
         "On": "14:00",
@@ -150,7 +166,8 @@
         "Light 2": false,
         "Fan": true,
         "Air": false,
-        "Heater": false
+        "Heater": false,
+        "Res": false
     },
     {
         "On": "15:00",
@@ -159,7 +176,8 @@
         "Light 2": false,
         "Fan": true,
         "Air": false,
-        "Heater": false
+        "Heater": false,
+        "Res": false
     },
     {
         "On": "16:00",
@@ -168,7 +186,8 @@
         "Light 2": false,
         "Fan": true,
         "Air": false,
-        "Heater": false
+        "Heater": false,
+        "Res": false
     },
     {
         "On": "17:00",
@@ -177,7 +196,8 @@
         "Light 2": false,
         "Fan": true,
         "Air": false,
-        "Heater": false
+        "Heater": false,
+        "Res": false
     },
     {
         "On": "18:00",
@@ -186,7 +206,8 @@
         "Light 2": false,
         "Fan": true,
         "Air": false,
-        "Heater": false
+        "Heater": false,
+        "Res": false
     },
     {
         "On": "19:00",
@@ -195,7 +216,8 @@
         "Light 2": false,
         "Fan": true,
         "Air": false,
-        "Heater": false
+        "Heater": false,
+        "Res": false
     },
     {
         "On": "20:00",
@@ -204,7 +226,8 @@
         "Light 2": false,
         "Fan": true,
         "Air": false,
-        "Heater": false
+        "Heater": false,
+        "Res": false
     },
     {
         "On": "21:00",
@@ -213,7 +236,8 @@
         "Light 2": false,
         "Fan": true,
         "Air": false,
-        "Heater": false
+        "Heater": false,
+        "Res": false
     },
     {
         "On": "22:00",
@@ -222,7 +246,8 @@
         "Light 2": false,
         "Fan": true,
         "Air": false,
-        "Heater": false
+        "Heater": false,
+        "Res": false
     },
     {
         "On": "23:00",
@@ -231,6 +256,7 @@
         "Light 2": false,
         "Fan": true,
         "Air": false,
-        "Heater": false
+        "Heater": false,
+        "Res": false
     }
 ]

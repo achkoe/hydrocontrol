@@ -27,7 +27,7 @@ fieldset legend {
 label {
     margin-right: 1em;
 }
-button {
+.ybutton {
     background: #0A0;
     padding: 5px 10px;
     border-radius: 5px;
@@ -55,3 +55,18 @@ button {
 
 .on { color: #0A0; }
 .off { color: red; }
+
+.inline-buttons .et_pb_button_module_wrapper { display: inline-block; margin: 0 10px; }
+
+.inline-buttons {
+    background: #0A0;
+    padding: 5px 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 0 1px #ddd;
+    margin-top: 2ex;
+    width: 33%;
+    color: white;
+    font-size:  120%;
+    text-align: center !important;
+}
+

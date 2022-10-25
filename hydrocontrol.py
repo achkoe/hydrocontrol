@@ -26,12 +26,21 @@ app = Flask(__name__)
 @app.route('/', methods=('GET', 'POST'))
 def index():
     if request.method == 'POST':
+        for pos in range(len(data)):
+            data[pos].update(dict([(key, False) for key in data[pos].keys() if key not in ["On", "Off"]]))
+        for name in request.form:
+            # print(name, request.form.get(name, None))
+            dname, pos = name.rsplit("_", 1)
+            pos = int(pos)
+            if dname not in ["On", "Off", "select"]:
+                data[pos].update({dname: True})
+            else:
+                data[pos].update({dname: request.form[name]})
+        for _ in data: print(_)
         with open("config.json", "w") as fh:
             json.dump(data, fh, indent=4)
-        qw.put(controller.command_reload)
-    fdata = "\n".join(f"{item!r}" for item in data)
-    return render_template('index.html', data=fdata, keylist=keylist)
-    #return render_template('index.html', data=json.dumps(data, indent=4), keylist=keylist)
+            qw.put(controller.command_reload)
+    return render_template('index.html', data=data, keylist=keylist)
 
 
 @app.route('/query', methods=('GET',))

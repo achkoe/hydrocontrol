@@ -15,10 +15,79 @@
 <p></p>
 
 <form method="post">
-    <textarea rows="50", cols="120" wrap="hard">{{data}}</textarea>
-    <div class="form-group">
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </div>
-</form>
-
+      <div class="form-group">
+        <button type="submit" class="inline-buttons et_pb_button_module_wrapper">Submit</button>
+        <button class="inline-buttons et_pb_button_module_wrapper">Add</button>
+        <button class="inline-buttons et_pb_button_module_wrapper">Delete</button>
+      </div>
+   {% for odict in data %}
+        <fieldset>
+            <label>
+                <input name="select_{{loop.index0}}"
+                   class="form-control"
+                   type="checkbox"/>
+            </label>
+            <label>On
+                <input name="On_{{loop.index0}}"
+                   class="form-control"
+                   type="time"
+                   value="{{odict['On']}}"/>
+            </label>
+            <label>Off
+                <input name="Off_{{loop.index0}}"
+                   class="form-control"
+                   type="time"
+                   value="{{odict['Off']}}"/>
+            </label>
+            <label>Light 1
+                <input name="Light 1_{{loop.index0}}"
+                   class="form-control"
+                   type="checkbox"
+                   {% if odict["Light 1"] %}
+                   checked
+                   {% endif %} />
+            </label>
+            <label>Light 2
+                <input name="Light 2_{{loop.index0}}"
+                   class="form-control"
+                   type="checkbox"
+                   {% if odict["Light 2"] %}
+                   checked
+                   {% endif %} />
+            </label>
+            <label>Fan
+                <input name="Fan_{{loop.index0}}"
+                   class="form-control"
+                   type="checkbox"
+                   {% if odict["Fan"] %}
+                   checked
+                   {% endif %} />
+            </label>
+            <label>Air
+                <input name="Air_{{loop.index0}}"
+                   class="form-control"
+                   type="checkbox"
+                   {% if odict["Air"] %}
+                   checked
+                   {% endif %} />
+            </label>
+            <label>Heater
+                <input name="Heater_{{loop.index0}}"
+                   class="form-control"
+                   type="checkbox"
+                   {% if odict["Heater"] %}
+                   checked
+                   {% endif %} />
+            </label>
+            <label>Res
+                <input name="Res_{{loop.index0}}"
+                   class="form-control"
+                   type="checkbox"
+                   {% if odict["Res"] %}
+                   checked
+                   {% endif %} />
+            </label>
+        </fieldset>
+   {% endfor %}
+   </form>
 {% endblock %}
