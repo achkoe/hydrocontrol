@@ -10,7 +10,10 @@ function timer() {
                 // console.log("xmlhttp.readyState=" + xmlhttp.readyState + " ,xmlhttp.status=" + xmlhttp.status);
                 if(xmlhttp.readyState == 4 && xmlhttp.status == 200){
                         obj = JSON.parse(xmlhttp.responseText);
-                        // console.log(obj);
+                        console.log(obj["currenttime"]);
+                        console.log(obj["currenttime"]);
+                        document.getElementById("time").innerHTML = obj["currenttime"];
+
                         for (var prop in obj["state"]) {
                                 // console.log(prop + " " + obj["state"][prop]);
                                 e = document.getElementById(prop);

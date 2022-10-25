@@ -87,7 +87,6 @@ def loop(timelist, queue_r, queue_w):
                 for key in gpio_dict:
                     if timeitem.get(key, False) is True:
                         gpio_dict[key] = ON
-                        print(key, "ON")
 
         if not queue_r.empty():
             cmd = queue_r.get()
@@ -95,7 +94,7 @@ def loop(timelist, queue_r, queue_w):
                 print("cmd reload")
                 break
             elif cmd == command_get:
-                rval = json.dumps(dict(timelist=timelist, state=gpio_dict))
+                rval = json.dumps(dict(timelist=timelist, state=gpio_dict, currenttime=currenttime.strftime("%H:%M")))
                 queue_w.put(rval)
 
         # print(currenttime, gpio_dict)
