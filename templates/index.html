@@ -19,8 +19,8 @@
 <form method="post">
       <div class="form-group">
         <button type="submit" class="inline-buttons et_pb_button_module_wrapper">Submit</button>
-        <button class="inline-buttons et_pb_button_module_wrapper">Add</button>
-        <button class="inline-buttons et_pb_button_module_wrapper">Delete</button>
+        <button type="submit" formaction="/add" class="inline-buttons et_pb_button_module_wrapper">Add</button>
+        <button type="submit" formaction="/delete" class="inline-buttons et_pb_button_module_wrapper">Delete</button>
       </div>
    {% for odict in data %}
         <fieldset>

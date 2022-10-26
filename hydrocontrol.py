@@ -34,6 +34,8 @@ def index():
             pos = int(pos)
             if dname not in ["On", "Off", "select"]:
                 data[pos].update({dname: True})
+            elif dname == "select":
+                pass
             else:
                 data[pos].update({dname: request.form[name]})
         for _ in data: print(_)
@@ -48,3 +50,14 @@ def query():
     qw.put(controller.command_get)
     rval = qr.get()
     return(str(rval))
+
+
+@app.route('/add', methods=('GET', 'POST'))
+def add():
+    print("ADD")
+    return render_template('index.html', data=data, keylist=keylist)
+
+@app.route('/delete', methods=('GET', 'POST'))
+def delete():
+    print("DEL")
+    return render_template('index.html', data=data, keylist=keylist)

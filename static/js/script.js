@@ -2,6 +2,7 @@ window.onload = function () {
         timer();
 }
 
+
 function timer() {
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.open("GET", "/query", true);
@@ -21,7 +22,7 @@ function timer() {
                                 e.classList.remove("off");
                                 e.classList.add(obj["state"][prop] ? "on" : "off");
                         }
-                        setTimeout(timer, 1000);
+                        //!setTimeout(timer, 1000);
                 }
         }
         xmlhttp.send();

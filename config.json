@@ -1,7 +1,7 @@
 [
     {
         "On": "06:00",
-        "Off": "20:00",
+        "Off": "20:01",
         "Light 1": true,
         "Light 2": true,
         "Fan": false,
