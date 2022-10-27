@@ -23,15 +23,36 @@ p.start()
 
 app = Flask(__name__)
 
+
+def get_dname_and_pos(name):
+    dname, pos = name.rsplit("_", 1)
+    pos = int(pos)
+    return dname, pos
+
+
+def get_select_pos(request):
+    for name in request.form:
+        dname, pos = get_dname_and_pos(name)
+        if dname == "select":
+            return pos
+            break
+    return -1
+
+
+def save():
+    with open("config.json", "w") as fh:
+        json.dump(data, fh, indent=4)
+        qw.put(controller.command_reload)
+
+
 @app.route('/', methods=('GET', 'POST'))
 def index():
     if request.method == 'POST':
         for pos in range(len(data)):
             data[pos].update(dict([(key, False) for key in data[pos].keys() if key not in ["On", "Off"]]))
         for name in request.form:
+            dname, pos = get_dname_and_pos(name)
             # print(name, request.form.get(name, None))
-            dname, pos = name.rsplit("_", 1)
-            pos = int(pos)
             if dname not in ["On", "Off", "select"]:
                 data[pos].update({dname: True})
             elif dname == "select":
@@ -39,9 +60,7 @@ def index():
             else:
                 data[pos].update({dname: request.form[name]})
         for _ in data: print(_)
-        with open("config.json", "w") as fh:
-            json.dump(data, fh, indent=4)
-            qw.put(controller.command_reload)
+        save()
     return render_template('index.html', data=data, keylist=keylist)
 
 
@@ -52,12 +71,20 @@ def query():
     return(str(rval))
 
 
-@app.route('/add', methods=('GET', 'POST'))
+@app.route('/add', methods=('POST', ))
 def add():
     print("ADD")
-    return render_template('index.html', data=data, keylist=keylist)
+    pos = get_select_pos(request)
+    data.insert(pos, data[pos])
+    save()
+    return redirect(url_for('index'))
+
 
 @app.route('/delete', methods=('GET', 'POST'))
 def delete():
     print("DEL")
-    return render_template('index.html', data=data, keylist=keylist)
+    pos = get_select_pos(request)
+    if pos != -1:
+        del data[pos]
+    save()
+    return redirect(url_for('index'))
