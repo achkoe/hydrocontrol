@@ -32,8 +32,8 @@ gpio_map = {
     "Light 1": 14,
     "Light 2": 15,
     "Fan": 23,
-    "Heater": 18,
-    "Air": 17,
+    "Heater": 17,
+    "Air": 18,
     "Res": 22,
 }
 
