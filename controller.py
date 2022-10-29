@@ -1,4 +1,4 @@
-"""Controller script for plant grow station.
+"""Controller script for hydro plant grow station.
 
 3.3V                  1   2  5V
 GPIO2                 3   4  5V
@@ -11,8 +11,8 @@ GPIO22               15  16  GPIO23  Fan
 """
 import json
 import time
-from datetime import datetime, timedelta
-import pprint
+from datetime import datetime
+
 
 try:
     import RPi.GPIO as GPIO
@@ -39,6 +39,8 @@ gpio_map = {
 
 
 class Clock():
+    """Clock class to deal with "real" time."""
+
     def __init__(self):
         self.ts = time.time()
 
@@ -48,6 +50,8 @@ class Clock():
 
 
 class FakeClock():
+    """Clock class to deal with "fake" time, for testing purposes only."""
+
     def __init__(self):
         self.tlist = []
         for day in [1, 2]:
@@ -63,7 +67,7 @@ class FakeClock():
         return rval
 
 
-#clock = FakeClock()
+# clock = FakeClock()
 clock = Clock()
 
 
@@ -75,6 +79,20 @@ def tstr2datetime(s):
 
 
 def loop(timelist, queue_r, queue_w):
+    """
+    Args:
+        timelist (list): list with dict with keys "On", "Off", "Light1", "Light2", "Fan", "Air", "Res"
+        queue_r (Queue.queue): "read" queue to read commands from
+        queue_w (Queue.queue): "write" queue to write response to read commands to
+
+    Get the current time, and if any On and Off time in timelist lies between current time,
+    switch corresponding outputs on, otherwise off.
+
+    If queue_r has the command "command_get", put a dumped json with timelist, state of the swithes and
+    currenttime to queue_w.
+
+    If queue_r has the command "command_reload", return.
+    """
     print("entering loop")
     while True:
 
@@ -103,10 +121,12 @@ def loop(timelist, queue_r, queue_w):
 
         # while clock.get().minute == currenttime.minute:
         #     pass
+        # needed to let input and output queue time to process.
         time.sleep(0.1)
 
 
 def main(queue_r, queue_w):
+    """Set up GPIO, and, forever, load the configuration and enter loop."""
     GPIO.setmode(GPIO.BCM)
     for gpio in gpio_map.values():
         GPIO.setup(gpio, GPIO.OUT)
