@@ -1,13 +1,13 @@
 """Controller script for hydro plant grow station.
 
-3.3V                  1   2  5V
-GPIO2                 3   4  5V
-GPIO3                 5   6  GND
-GPIO4                 7   8  GPIO14  Light1
-GND                   9  10  GPIO15  Light2
-GPIO17  Plug3 (Air)  11  12  GPIO18  Plug4 (Heater)
-GPIO27  Plug5 (Res)  13  14  GND
-GPIO22               15  16  GPIO23  Fan
+3.3V                     1   2  5V
+GPIO2                    3   4  5V
+GPIO3                    5   6  GND
+GPIO4                    7   8  GPIO14  Light1
+GND                      9  10  GPIO15  Light2
+GPIO17  Plug3 (Heater)  11  12  GPIO18  Plug4 (Air)
+GPIO27                  13  14  GND
+GPIO22 Plug5 (Res)      15  16  GPIO23  Fan
 """
 import json
 import time

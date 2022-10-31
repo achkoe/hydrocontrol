@@ -12,7 +12,7 @@ fieldset {
     border: 1px solid #090;
     background: #ddd;
     border-radius: 5px;
-    padding: 15px;
+    padding: 5px;
     margin-bottom: 1ex;
 }
 fieldset legend {
@@ -22,21 +22,10 @@ fieldset legend {
     border-radius: 5px;
     box-shadow: 0 0 0 1px #ddd;
     margin-left: 20px;
-    margin-top: 2ex;
+    margin-top: 1ex;
 }
 label {
     margin-right: 1em;
-}
-.ybutton {
-    background: #0A0;
-    padding: 5px 10px;
-    border-radius: 5px;
-    box-shadow: 0 0 0 1px #ddd;
-    margin-top: 2ex;
-    width: 20em;
-    color: white;
-    font-size:  120%;
-    width: 100%;
 }
 .flex-container {
   display:flex;
@@ -50,7 +39,8 @@ label {
     border-radius: 5px;
     box-shadow: 0 0 0 1px #ddd;
     margin-left: 20px;
-    margin-top: 2ex;
+    margin-top: 1ex;
+    margin-bottom: 1ex;
 }
 
 .on { color: #0A0; }
@@ -70,3 +60,7 @@ label {
     text-align: center !important;
 }
 
+.form-group {margin-bottom: 1em; margin-top: -1em;}
+
+.enabled { background-color: #0A0 !important; }
+.disabled { background-color: #030 !important; color: #999;}

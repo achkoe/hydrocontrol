@@ -1,6 +1,28 @@
 window.onload = function () {
         timer();
+        var e = document.getElementById("btnDelete");
+        document.querySelectorAll(".select").forEach(function(cb) {
+                e.disabled = true
+                e.classList.remove("enabled");
+                e.classList.add("disabled");
+        });
 }
+
+
+function selectItem() {
+        var e = document.getElementById("btnDelete");
+        e.disabled = true;
+        e.classList.remove("enabled");
+        e.classList.add("disabled");
+        document.querySelectorAll(".select").forEach(function(cb) {
+                if (cb.checked == true) {
+                        e.disabled = false;
+                        e.classList.remove("disabled");
+                        e.classList.add("enabled");
+                }
+        });
+}
+
 
 
 function timer() {
@@ -22,7 +44,7 @@ function timer() {
                                 e.classList.remove("off");
                                 e.classList.add(obj["state"][prop] ? "on" : "off");
                         }
-                        //!setTimeout(timer, 1000);
+                      setTimeout(timer, 1000);
                 }
         }
         xmlhttp.send();

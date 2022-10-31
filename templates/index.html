@@ -20,13 +20,14 @@
       <div class="form-group">
         <button type="submit" class="inline-buttons et_pb_button_module_wrapper">Submit</button>
         <button type="submit" formaction="/add" class="inline-buttons et_pb_button_module_wrapper">Add</button>
-        <button type="submit" formaction="/delete" class="inline-buttons et_pb_button_module_wrapper">Delete</button>
+        <button type="submit" id="btnDelete" formaction="/delete" class="inline-buttons et_pb_button_module_wrapper">Delete</button>
       </div>
    {% for odict in data %}
         <fieldset>
             <label>
                 <input name="select_{{loop.index0}}"
-                   class="form-control"
+                   class="form-control select"
+                   onclick="selectItem()"
                    type="checkbox"/>
             </label>
             <label>On
