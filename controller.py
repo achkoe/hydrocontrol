@@ -93,7 +93,7 @@ def loop(timelist, queue_r, queue_w):
 
     If queue_r has the command "command_reload", return.
     """
-    print("entering loop")
+    print("entering loop {}".format(time.time()))
     while True:
 
         currenttime = clock.get()

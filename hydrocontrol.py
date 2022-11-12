@@ -4,7 +4,7 @@ It is an application using Flask to edit, add and delete
 the list of items where every item
 contains the on time, the off time and what to switch on or off.
 
-TheEvery item in ths list looks like this:
+The item in ths list looks like this:
 
 <on time> <off time> <light 1> <Light 2> <Fan> <Air> <Heater> <Res>
 
@@ -17,15 +17,22 @@ where the "select" field is used for delete or add actions.
 ===============================================
 set FLASK_APP=hydrocontrol
 set FLASK_ENV=development
-flask run
+
+FLASK_APP=hydrocontrol set FLASK_ENV=development flask run
 
 flask --app hydrocontrol.py run --host=0.0.0.0
 """
 from multiprocessing import Process, Queue
 import json
+import time
+import copy
+import logging
 from flask import Flask, render_template, request, url_for, redirect
 
 import controller
+
+
+logging.getLogger('werkzeug').setLevel(logging.ERROR)
 
 # load configuration file
 with open("config.json", "r") as fh:
@@ -71,26 +78,33 @@ def save():
         qw.put(controller.command_reload)
 
 
+def debug():
+    print("======= {} =======".format(time.time()))
+    for _ in data: print(_)
+
+
 @app.route('/', methods=('GET', 'POST'))
 def index():
     """Return index page."""
+    global data
     if request.method == 'POST':
         for pos in range(len(data)):
             # Reset all switch channels in data
-            data[pos].update(dict([(key, False) for key in data[pos].keys() if key not in ["On", "Off"]]))
+            for key in data[pos].keys():
+                if key in ["On", "Off"]:
+                    continue
+                data[pos][key] = False
         for name in request.form:
             dname, pos = get_dname_and_pos(name)
-            # print(name, request.form.get(name, None))
             if dname not in ["On", "Off", "select"]:
                 # update switch channel
-                data[pos].update({dname: True})
+                data[pos][dname] = True
             elif dname == "select":
                 # ignore select flag
                 pass
             else:
                 # update on or off time
-                data[pos].update({dname: request.form[name]})
-        # for _ in data: print(_)
+                data[pos][dname] = request.form[name]
         save()
     return render_template('index.html', data=data, keylist=keylist)
 
@@ -110,7 +124,7 @@ def add():
     """Function to add a new list item, either after "select" position or at end of list."""
     print("ADD")
     pos = get_select_pos(request)
-    data.insert(pos, data[pos])
+    data.insert(pos, copy.deepcopy(data[pos]))
     save()
     return redirect(url_for('index'))
 
