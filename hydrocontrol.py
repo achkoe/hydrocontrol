@@ -18,7 +18,7 @@ where the "select" field is used for delete or add actions.
 set FLASK_APP=hydrocontrol
 set FLASK_ENV=development
 
-FLASK_APP=hydrocontrol set FLASK_ENV=development flask run
+FLASK_APP=hydrocontrol FLASK_ENV=development flask run
 
 flask --app hydrocontrol.py run --host=0.0.0.0
 """
@@ -32,7 +32,7 @@ from flask import Flask, render_template, request, url_for, redirect
 import controller
 
 
-logging.getLogger('werkzeug').setLevel(logging.ERROR)
+# logging.getLogger('werkzeug').setLevel(logging.ERROR)
 
 # load configuration file
 with open("config.json", "r") as fh:

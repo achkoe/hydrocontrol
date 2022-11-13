@@ -36,6 +36,8 @@ function timer() {
                         console.log(obj["currenttime"]);
                         console.log(obj["currenttime"]);
                         document.getElementById("time").innerHTML = obj["currenttime"];
+                        document.getElementById("temperature").innerHTML = obj["environment"]["temperature"];
+                        document.getElementById("humidity").innerHTML = obj["environment"]["humidity"];
 
                         for (var prop in obj["state"]) {
                                 // console.log(prop + " " + obj["state"][prop]);

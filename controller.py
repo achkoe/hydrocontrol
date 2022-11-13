@@ -16,8 +16,12 @@ from datetime import datetime
 
 try:
     import RPi.GPIO as GPIO
+    import smbus2
+    import bme280
 except ModuleNotFoundError:
     import fake_gpio as GPIO
+    from fake_gpio import smbus2
+    from fake_gpio import bme280
 
 
 config_name = "config.json"
@@ -36,6 +40,19 @@ gpio_map = {
     "Air": 18,
     "Res": 22,
 }
+
+
+class Bme280():
+    def __init__(self):
+        self.bus = smbus2.SMBus(1)
+        self.address = 0x76
+        self.calibrationParameters = bme280.load_calibration_params(self.bus, self.address)
+
+    def read(self):
+        data = bme280.sample(self.bus, self.address, self.calibrationParameters)
+        data.temperature = "{:.1f}".format(data.temperature)
+        data.humidity = "{:.1f}".format(data.humidity)
+        return dict(temperature=data.temperature, pressure=data.pressure, humidity=data.humidity)
 
 
 class Clock():
@@ -69,6 +86,7 @@ class FakeClock():
 
 # clock = FakeClock()
 clock = Clock()
+thp_sensor = Bme280()
 
 
 def tstr2datetime(s):
@@ -112,7 +130,11 @@ def loop(timelist, queue_r, queue_w):
                 print("cmd reload")
                 break
             elif cmd == command_get:
-                rval = json.dumps(dict(timelist=timelist, state=gpio_dict, currenttime=currenttime.strftime("%H:%M")))
+                rval = json.dumps(dict(
+                    timelist=timelist,
+                    state=gpio_dict,
+                    currenttime=currenttime.strftime("%H:%M"),
+                    environment=thp_sensor.read()))
                 queue_w.put(rval)
 
         # print(currenttime, gpio_dict)

@@ -3,7 +3,7 @@
 {% block content %}
 <h1>{% block title %} Welcome to HydroControl {% endblock %}</h1>
 
-<p align="center" id="time"></p>
+<p align="center">Time <span id="time"></span>, Temperature <span id="temperature"></span>°C, Humidity <span id="humidity"></span>%</p>
 
 <div class="flex-container">
 {% for key in keylist %}
